@@ -1,0 +1,103 @@
+:root{
+
+    /* heights */
+    --nav-height : 60px;
+    --height-s: 12px;
+    --height-m: 24px;
+    --height-l: 36px;
+    --height-xl: 48px;
+    --height-xxl: 60px;
+
+    /* widths */
+    --sideBar-width-expanded: 250px; 
+    --sideBar-width-compressed: 25px; /* same as expaned for now */
+
+    /* Spacings  */
+    --nav-padding: 15px 15px;
+    --app-container-padding: 15px 15px;
+    --padding-s: 5px;
+    --padding-m: 10px;
+    --padding-l: 15px;
+    --padding-xl: 20px;
+    --padding-xxl: 25px;
+
+    /* Border radius  */
+    --border-radius-s: 5px;
+    --border-radius-m: 10px;
+    --border-radius-l: 15px;
+    --border-radius-xl: 20px;
+    --border-radius-xxl: 25px;
+}
+
+nav {
+    background-color: red; /* For testing purposes */
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--nav-padding);
+    /* height: var(--nav-height); */
+    min-height: var(--nav-height);
+    position: sticky;
+    top: 0;
+}
+
+.app-container {
+    height: calc(100vh - var(--nav-height));
+    box-sizing: border-box;
+    display: flex;
+    gap: var(--padding-l);
+    background-color: brown; /* For testing purposes */
+    position: relative;
+}
+
+.sideBar {
+    display: flex;
+    flex-direction: column;
+    width: var(--sideBar-width-expanded);
+    background-color: blue; /* For testing purposes */
+}
+
+.sideBar.collapsed{
+    width: var(--sideBar-width-compressed);
+}
+
+.workspaceTabs {
+    overflow-y: auto;
+}
+
+.workspaceTabs .workspace-tab.active{
+    background-color: deeppink; /* For testing purposes */
+}
+
+.workspace {
+    min-height: 0;
+    background-color: aqua; /* For testing purposes */
+    flex: 1;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--padding-l);
+}
+
+.workspace .task-column {
+    min-height: 0;
+    display: flex;
+    height: 100%;
+    flex-direction: column;
+    background-color: cadetblue; /* For testing purposes */
+}
+
+.workspace .task-column .heading{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: var(--height-xl);
+    background-color: blueviolet; /* For testing purposes */
+}
+
+.workspace .task-column .task-list {
+    min-height: 0;
+    flex: 1;
+    background-color: coral; /* For testing purposes */
+    overflow-y: auto;
+}

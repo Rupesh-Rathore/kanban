@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>TaskHub</title>
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/layout.css">
+</head>
+
+<body data-theme="light">
+    <nav>
+        <div class="nav-left" id="workspaceTitle"></div>
+        <div class="nav-right">
+            <button class="navButtons" id="themeToggle">Toggle</button>
+            <button class="navButtons" id="addTask">Add Task</button>
+        </div>
+    </nav>
+    <div class="app-container">
+        <div class="sideBar">
+            <button id="hamburgerButton">hamburgerButton</button>
+            <h2>TaskHub</h2>
+            <div class="workspaceTabs"></div>
+        </div>
+        <main class="workspace">
+            <div data-status="todo" class="task-column">
+                <div class="heading">
+                    <div class="column-left">To do</div>
+                    <div class="column-right count">count</div>
+                </div>
+                <div class="task-list">
+                    
+                </div>
+            </div>
+            <div data-status="in-progress" class="task-column">
+                <div class="heading">
+                    <div class="column-left">In Progress</div>
+                    <div class="column-right count">count</div>
+                </div>
+                <div class="task-list">
+                    
+                </div>
+            </div>
+            <div data-status="review" class="task-column">
+                <div class="heading">
+                    <div class="column-left">Review</div>
+                    <div class="column-right count">count</div>
+                </div>
+                <div class="task-list">
+                    
+                </div>
+            </div>
+            <div data-status="done" class="task-column">
+                <div class="heading">
+                    <div class="column-left">Done</div>
+                    <div class="column-right count">count</div>
+                </div>
+                <div class="task-list">
+                    
+                </div>
+            </div>
+        </main>
+    </div>
+    <script type="module" src="js/main.js"></script>
+</body>
+
+</html>
