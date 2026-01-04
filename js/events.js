@@ -41,6 +41,26 @@ taskLists.forEach(taskList =>{
         appState.tasks = appState.tasks.filter(t=> t.id !== task.dataset.id);
         saveState(appState);
         renderApp();
+    });
+    taskList.addEventListener('dragstart',(e) =>{
+        const task = e.target.closest('.task');
+        if (!task) return;
+        e.dataTransfer.setData('text/plain', task.dataset.id);
+    e.dataTransfer.effectAllowed = 'move';
+    });
+    taskList.addEventListener('dragover',(e) =>{
+        e.preventDefault();
+    });
+    taskList.addEventListener('drop',(e) =>{
+        e.preventDefault();
+        const droppedTaskId = e.dataTransfer.getData('text/plain');
+        if(!droppedTaskId) return;
+        const droppedTask = appState.tasks.find(task => task.id === droppedTaskId) ;
+        if(!droppedTask) return;
+        if(droppedTask.status === taskList.closest('.task-column').dataset.status) return;
+        droppedTask.status = taskList.closest('.task-column').dataset.status;
+        saveState(appState);
+        renderApp();
     })
 })
 }

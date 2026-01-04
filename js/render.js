@@ -42,6 +42,7 @@ export function renderTasks() {
         const taskelement = document.createElement('div');
         taskelement.classList.add('task');
         taskelement.setAttribute('data-id',task.id);
+        taskelement.setAttribute("draggable","true");
         // taskelement.setAttribute('data-status',task.status);
         // taskelement.setAttribute('data-workspace-id',task.workspaceId);
         taskelement.innerHTML = `
