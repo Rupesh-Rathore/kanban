@@ -1,5 +1,6 @@
 import { appState } from "./state.js";
 import { renderApp } from "./render.js";
+import { saveState } from "./persistence.js";
 
 export function initWorkspaceEvents() {
     const workspaceTabsContainer = document.querySelector('.workspaceTabs');
@@ -14,6 +15,7 @@ export function initWorkspaceEvents() {
         
         if (workspaceId === appState.activeWorkspaceId) return;
         appState.activeWorkspaceId = workspaceId;
+        saveState(appState);
         renderApp();
     })
 }
@@ -37,6 +39,7 @@ taskLists.forEach(taskList =>{
         const task = e.target.closest('.task');
         if (!task) return;
         appState.tasks = appState.tasks.filter(t=> t.id !== task.dataset.id);
+        saveState(appState);
         renderApp();
     })
 })
