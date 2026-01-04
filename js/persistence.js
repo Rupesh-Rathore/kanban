@@ -81,8 +81,6 @@ export function loadState() {
 
     const savedState = localStorage.getItem(APP_STATE_KEY);
 
-    // Checking if localStorage.getItem() returned something or not 
-
     if (!savedState){
         return defaultState
     }
@@ -93,23 +91,10 @@ export function loadState() {
             return defaultState;    
         }
         else {
-
-            // Theme validation 
-
             normalizeTheme(defaultState,parsedState);
-
-            // Workspace validation
-
             normalizeWorkspaces(defaultState,parsedState);
-
-            // activeWorkspaceId validation
-
             normalizeActiveWorkspaceId(defaultState,parsedState);
-
-            // task validation / normalization
-
             normalizeTasks(defaultState,parsedState);
-
         }
     }
     catch (error) {
@@ -119,4 +104,14 @@ export function loadState() {
 
     return defaultState;
 
+}
+
+
+export function saveState(state) {
+    try{
+        localStorage.setItem(APP_STATE_KEY,JSON.stringify(state));
+    }
+    catch(error){
+        console.error(`Failed to save state : ${error}`);
+    }
 }
