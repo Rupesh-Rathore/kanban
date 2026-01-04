@@ -7,7 +7,8 @@ import { loadState } from "./persistence.js";
 document.addEventListener('DOMContentLoaded', () => {
 
     //  Loading stored state
-    appState = loadState();
+    const loadedState = loadState();
+    Object.assign(appState, loadedState);
 
     //  Attach events
 
