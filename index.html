@@ -21,6 +21,7 @@
         <div class="sideBar">
             <button id="hamburgerButton">hamburgerButton</button>
             <h2>TaskHub</h2>
+            <button id="addWorkspaceBtn"></button>
             <div class="workspaceTabs"></div>
         </div>
         <main class="workspace">
@@ -74,7 +75,15 @@
                     <option value="high">High</option>
                 </select>
                 <button id = "add-new-task" class="add-task-btn">Add task</button>
-                <button id = "cancel-btn-id" class="cancel-btn">Cancel</button>
+                <button id = "cancel-btn-id-task" class="cancel-btn">Cancel</button>
+        </div>
+    </div>
+    <div class="modal add-new-workspace">
+        <div class="bg"></div>
+        <div class="center">
+            <input id= "workspace-title-input" type="text" placeholder="Workspace Name">
+            <button id = "add-new-workspace" class="add-workspace-btn">Add Workspace</button>
+            <button id = "cancel-btn-id-workspace" class="cancel-btn">Cancel</button>
         </div>
     </div>
     <script type="module" src="js/main.js"></script>

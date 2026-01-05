@@ -70,12 +70,12 @@ export function initAddTaskModalEvents() {
     const modalBg = document.querySelector('.modal .bg');
     const modal = document.querySelector('.modal');
     const addTaskBtn = document.querySelector('#add-new-task');
-    const cancelBtn = document.querySelector('#cancel-btn-id');
+    const cancelBtn = document.querySelector('#cancel-btn-id-task');
 
     //Modal events handlers
 
-    if(!modal) return;
-    if(!modalOpenBtn) return;
+    if (!modal || !modalOpenBtn) return;
+
     modalOpenBtn.addEventListener('click' , () => {
         openModal(modal);
     })
@@ -93,14 +93,20 @@ export function initAddTaskModalEvents() {
     }
 
     window.addEventListener('keydown' , (e) => {
-        if (e.key === 'Escape') closeModal(modal);
+        if (modal.classList.contains('open') && e.key === 'Escape') {
+            closeModal(modal);
+        }
     })
 
     // Add task btn event handler
     const taskTitleInput = document.querySelector('#task-title-input');
     const taskDescInput = document.querySelector('#task-desc-input');
     const taskPriority = document.querySelector('#task-priority');
+
+    if (!taskTitleInput || !taskDescInput || !taskPriority) return;
+
     if(!addTaskBtn) return;
+
     addTaskBtn.addEventListener('click' , () => {
         
         const taskTitleInputValue = taskTitleInput.value;
@@ -118,13 +124,13 @@ export function initAddTaskModalEvents() {
         saveState(appState);
         renderApp();
         closeModal(modal);
-        document.querySelector('#task-title-input').value = '';
-        document.querySelector('#task-desc-input').value = '';
-        document.querySelector('#task-priority').value = 'low';
+        taskTitleInput.value = '';
+        taskDescInput.value = '';
+        taskPriority.value = 'low';
     })
 }
 
-// Helpers for Modal and Add task
+// Helpers for add task Modal
 
 function openModal(modal) {
     modal.classList.add('open');
@@ -147,4 +153,81 @@ function createTaskFromInput(title, description, priority, workspaceId, existing
         status : 'todo',
         workspaceId : workspaceId
     }
+}
+
+
+export function initAddWorkspaceModalEvents() {
+    const modalOpenBtn = document.querySelector('#addWorkspaceBtn');
+    const modal = document.querySelector('.add-new-workspace');
+    const modalBg = document.querySelector('.add-new-workspace .bg');
+    const addWorkspaceBtn = document.querySelector('#add-new-workspace');
+    const cancelBtn = document.querySelector('#cancel-btn-id-workspace');
+
+    if (!modal || !modalOpenBtn) return;
+
+    modalOpenBtn.addEventListener('click' , () => {
+        openModal(modal);
+    })
+
+    if(modalBg) {
+        modalBg.addEventListener('click' , () => {
+            closeModal(modal);
+        })
+    }
+
+    if(cancelBtn) {
+        cancelBtn.addEventListener('click' , () => {
+            closeModal(modal);
+        })
+    }
+
+    window.addEventListener('keydown' , (e) => {
+        if (modal.classList.contains('open') && e.key === 'Escape') {
+            closeModal(modal);
+        }
+    })
+
+    // Add workspace event handler 
+
+    const workspaceNameInput = document.querySelector('#workspace-title-input');
+
+    if (!workspaceNameInput) return;
+
+    if(!addWorkspaceBtn) return;
+    addWorkspaceBtn.addEventListener('click',() => {
+        const workspaceNameInputValue = workspaceNameInput.value;
+
+        if(!workspaceNameInputValue) return;
+        if(workspaceNameInputValue.trim() === '') return;
+
+        const workspace = createWorkspaceFromInput(workspaceNameInputValue,appState.workspaces);
+
+        if(!workspace) return;
+        appState.workspaces.push(workspace);
+        appState.activeWorkspaceId = workspace.id;
+        saveState(appState);
+        renderApp();
+        closeModal(modal);
+        workspaceNameInput.value = '';
+    })
+}
+
+function createWorkspaceFromInput(name, existingWorkspaces) {
+    const trimmedName = name.trim();
+    if (!trimmedName) return null;
+
+    const normalized = trimmedName.toLowerCase();
+    if (existingWorkspaces.some(ws => ws.name.toLowerCase() === normalized)) {
+        return null;
+    }
+
+    let id;
+    do {
+        id = crypto.randomUUID();
+    } while (existingWorkspaces.some(ws => ws.id === id));
+
+    return {
+        id: id,
+        name: trimmedName
+    };
 }

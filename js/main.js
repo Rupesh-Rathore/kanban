@@ -1,7 +1,7 @@
 import { renderApp } from './render.js';
 import { initWorkspaceEvents , initHamburgerEvent ,initTaskEvents } from './events.js';
 import { appState } from "./state.js";
-import { loadState } from "./persistence.js";
+import { loadState, saveState } from "./persistence.js";
 
 
 document.addEventListener('DOMContentLoaded', () => {
