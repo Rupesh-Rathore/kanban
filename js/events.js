@@ -64,3 +64,87 @@ taskLists.forEach(taskList =>{
     })
 })
 }
+
+export function initAddTaskModalEvents() {
+    const modalOpenBtn = document.querySelector('#addTask');
+    const modalBg = document.querySelector('.modal .bg');
+    const modal = document.querySelector('.modal');
+    const addTaskBtn = document.querySelector('#add-new-task');
+    const cancelBtn = document.querySelector('#cancel-btn-id');
+
+    //Modal events handlers
+
+    if(!modal) return;
+    if(!modalOpenBtn) return;
+    modalOpenBtn.addEventListener('click' , () => {
+        openModal(modal);
+    })
+
+    if(modalBg) {
+        modalBg.addEventListener('click' , () => {
+            closeModal(modal);
+        })
+    }
+
+    if(cancelBtn) {
+        cancelBtn.addEventListener('click' , () => {
+            closeModal(modal);
+        })
+    }
+
+    window.addEventListener('keydown' , (e) => {
+        if (e.key === 'Escape') closeModal(modal);
+    })
+
+    // Add task btn event handler
+    const taskTitleInput = document.querySelector('#task-title-input');
+    const taskDescInput = document.querySelector('#task-desc-input');
+    const taskPriority = document.querySelector('#task-priority');
+    if(!addTaskBtn) return;
+    addTaskBtn.addEventListener('click' , () => {
+        
+        const taskTitleInputValue = taskTitleInput.value;
+        const taskDescInputValue = taskDescInput.value;
+        const taskPriorityValue = taskPriority.value;
+
+        if(!taskTitleInputValue || !taskPriorityValue ) return;
+        if(taskTitleInputValue.trim() === '') return;
+        if(!appState.activeWorkspaceId) return;
+
+        const task = createTaskFromInput(taskTitleInputValue, taskDescInputValue, taskPriorityValue, appState.activeWorkspaceId, appState.tasks);
+
+        if(!task) return;
+        appState.tasks.push(task);
+        saveState(appState);
+        renderApp();
+        closeModal(modal);
+        document.querySelector('#task-title-input').value = '';
+        document.querySelector('#task-desc-input').value = '';
+        document.querySelector('#task-priority').value = 'low';
+    })
+}
+
+// Helpers for Modal and Add task
+
+function openModal(modal) {
+    modal.classList.add('open');
+}
+
+function closeModal(modal) {
+    modal.classList.remove('open');
+}
+
+function createTaskFromInput(title, description, priority, workspaceId, existingTasks) {
+    let id;
+    do{
+        id = crypto.randomUUID();
+    } while (existingTasks.some(t => t.id === id));
+    return {
+        id : id,
+        title : title,
+        description : description,
+        priority : priority,
+        status : 'todo',
+        workspaceId : workspaceId
+    }
+}
