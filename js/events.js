@@ -130,32 +130,6 @@ export function initAddTaskModalEvents() {
     })
 }
 
-// Helpers for add task Modal
-
-function openModal(modal) {
-    modal.classList.add('open');
-}
-
-function closeModal(modal) {
-    modal.classList.remove('open');
-}
-
-function createTaskFromInput(title, description, priority, workspaceId, existingTasks) {
-    let id;
-    do{
-        id = crypto.randomUUID();
-    } while (existingTasks.some(t => t.id === id));
-    return {
-        id : id,
-        title : title,
-        description : description,
-        priority : priority,
-        status : 'todo',
-        workspaceId : workspaceId
-    }
-}
-
-
 export function initAddWorkspaceModalEvents() {
     const modalOpenBtn = document.querySelector('#addWorkspaceBtn');
     const modal = document.querySelector('.add-new-workspace');
@@ -210,6 +184,31 @@ export function initAddWorkspaceModalEvents() {
         closeModal(modal);
         workspaceNameInput.value = '';
     })
+}
+
+// Helpers for add task/workspace Modal
+
+function openModal(modal) {
+    modal.classList.add('open');
+}
+
+function closeModal(modal) {
+    modal.classList.remove('open');
+}
+
+function createTaskFromInput(title, description, priority, workspaceId, existingTasks) {
+    let id;
+    do{
+        id = crypto.randomUUID();
+    } while (existingTasks.some(t => t.id === id));
+    return {
+        id : id,
+        title : title,
+        description : description,
+        priority : priority,
+        status : 'todo',
+        workspaceId : workspaceId
+    }
 }
 
 function createWorkspaceFromInput(name, existingWorkspaces) {
