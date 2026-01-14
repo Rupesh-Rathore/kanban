@@ -67,48 +67,55 @@ taskLists.forEach(taskList =>{
 
 export function initAddTaskModalEvents() {
     const modalOpenBtn = document.querySelector('#addTask');
-    const modalBg = document.querySelector('.modal .bg');
-    const modal = document.querySelector('.modal');
-    const addTaskBtn = document.querySelector('#add-new-task');
+    const modalBg = document.querySelector('.add-new-task .bg');
+    const modal = document.querySelector('.add-new-task');
+    const formAddTask = document.querySelector('.add-new-task .center')
+    
+    // Add task btn event handler
+    const taskTitleInput = document.querySelector('#task-title-input');
+    const taskDescInput = document.querySelector('#task-desc-input');
+    const taskPriority = document.querySelector('#task-priority');
     const cancelBtn = document.querySelector('#cancel-btn-id-task');
-
+    
+    if (!taskTitleInput || !taskDescInput || !taskPriority) return;
     //Modal events handlers
-
+    
     if (!modal || !modalOpenBtn) return;
 
     modalOpenBtn.addEventListener('click' , () => {
         openModal(modal);
+        taskTitleInput.focus();
     })
 
     if(modalBg) {
         modalBg.addEventListener('click' , () => {
             closeModal(modal);
+            formAddTask.reset();
         })
     }
 
     if(cancelBtn) {
         cancelBtn.addEventListener('click' , () => {
             closeModal(modal);
+            formAddTask.reset();
         })
     }
 
     window.addEventListener('keydown' , (e) => {
         if (modal.classList.contains('open') && e.key === 'Escape') {
             closeModal(modal);
+            formAddTask.reset();
         }
     })
 
-    // Add task btn event handler
-    const taskTitleInput = document.querySelector('#task-title-input');
-    const taskDescInput = document.querySelector('#task-desc-input');
-    const taskPriority = document.querySelector('#task-priority');
 
-    if (!taskTitleInput || !taskDescInput || !taskPriority) return;
 
-    if(!addTaskBtn) return;
+    if(!formAddTask) return;
 
-    addTaskBtn.addEventListener('click' , () => {
+    formAddTask.addEventListener('submit' , (e) => {
         
+        e.preventDefault();
+
         const taskTitleInputValue = taskTitleInput.value;
         const taskDescInputValue = taskDescInput.value;
         const taskPriorityValue = taskPriority.value;
@@ -124,9 +131,7 @@ export function initAddTaskModalEvents() {
         saveState(appState);
         renderApp();
         closeModal(modal);
-        taskTitleInput.value = '';
-        taskDescInput.value = '';
-        taskPriority.value = 'low';
+        formAddTask.reset();
     })
 }
 
