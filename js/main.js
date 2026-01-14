@@ -4,7 +4,8 @@ import {
     initHamburgerEvent,
     initTaskEvents,
     initAddTaskModalEvents,
-    initAddWorkspaceModalEvents
+    initAddWorkspaceModalEvents,
+    initDeleteWorkspaceModalEvents
 } from './events.js';
 
 import { appState } from "./state.js";
@@ -19,6 +20,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 2. Attach ALL event handlers
     initWorkspaceEvents();
+    initDeleteWorkspaceModalEvents();
     initHamburgerEvent();
     initTaskEvents();
     initAddTaskModalEvents();

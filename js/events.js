@@ -2,23 +2,54 @@ import { appState } from "./state.js";
 import { renderApp } from "./render.js";
 import { saveState } from "./persistence.js";
 
+let pendingDeleteWorkspaceId = null;
+
 export function initWorkspaceEvents() {
     const workspaceTabsContainer = document.querySelector('.workspaceTabs');
     if (!workspaceTabsContainer) return;
 
-    workspaceTabsContainer.addEventListener('click', (e) =>{
+    workspaceTabsContainer.addEventListener('click', (e) => {
+
+        // DELETE WORKSPACE
+        const deleteBtn = e.target.closest('.workspace-delete');
+        if (deleteBtn) {
+            e.stopPropagation();
+
+            const tab = deleteBtn.closest('.workspace-tab');
+            if (!tab) return;
+
+            pendingDeleteWorkspaceId = tab.dataset.workspaceId;
+            if (!pendingDeleteWorkspaceId) return;
+
+            const ws = appState.workspaces.find(
+                w => w.id === pendingDeleteWorkspaceId
+            );
+            if (!ws) return;
+
+            const deleteWorkspaceTitle =
+                document.querySelector('.delete-workspace-title');
+
+            deleteWorkspaceTitle.textContent =
+                `Delete workspace "${ws.name}" and all its tasks?`;
+
+            const modal = document.querySelector('.delete-workspace');
+            openModal(modal);
+            return;
+        }
+
+        // SWITCH WORKSPACE
         const tab = e.target.closest('.workspace-tab');
         if (!tab) return;
 
         const workspaceId = tab.dataset.workspaceId;
-        if (!workspaceId) return;
-        
-        if (workspaceId === appState.activeWorkspaceId) return;
+        if (!workspaceId || workspaceId === appState.activeWorkspaceId) return;
+
         appState.activeWorkspaceId = workspaceId;
         saveState(appState);
         renderApp();
-    })
+    });
 }
+
 
 export function initHamburgerEvent(){
     const hamburgerButton = document.querySelector('#hamburgerButton');
@@ -191,7 +222,47 @@ export function initAddWorkspaceModalEvents() {
     })
 }
 
-// Helpers for add task/workspace Modal
+export function initDeleteWorkspaceModalEvents() {
+        
+        const modal = document.querySelector('.delete-workspace');
+        const modalBg = document.querySelector('.delete-workspace .bg');
+        const confirmBtn = document.querySelector('#confirm-delete-workspace');
+        const cancelBtn =document.querySelector('#cancel-delete-workspace');
+
+        const deleteWorkspaceTitle = document.querySelector('.delete-workspace .icon-and-title .delete-workspace-title');
+
+        if(!modal) return;
+
+        if(!deleteWorkspaceTitle) return;
+
+        if(modalBg) {
+        modalBg.addEventListener('click' , () => {
+            resetDeleteWorkspaceModal(modal,deleteWorkspaceTitle);
+            })
+        }
+
+        if(cancelBtn) {
+        cancelBtn.addEventListener('click' , () => {
+            resetDeleteWorkspaceModal(modal,deleteWorkspaceTitle);
+            })
+        }
+
+        window.addEventListener('keydown' , (e) => {
+        if (modal.classList.contains('open') && e.key === 'Escape') {
+            resetDeleteWorkspaceModal(modal,deleteWorkspaceTitle);
+            }
+        })
+
+        if(!confirmBtn) return;
+        confirmBtn.addEventListener('click' , () => {
+            
+            if (!pendingDeleteWorkspaceId) return
+            confirmedWorkspaceDeletion();
+            resetDeleteWorkspaceModal(modal,deleteWorkspaceTitle);
+        })
+
+}
+// Helpers for add task/workspace/deleteWorkspace Modal
 
 function openModal(modal) {
     modal.classList.add('open');
@@ -234,4 +305,28 @@ function createWorkspaceFromInput(name, existingWorkspaces) {
         id: id,
         name: trimmedName
     };
+}
+
+function resetDeleteWorkspaceModal(modal,deleteWorkspaceTitle) {
+    pendingDeleteWorkspaceId = null;
+    deleteWorkspaceTitle.textContent = '';
+    closeModal(modal);
+
+}
+
+function confirmedWorkspaceDeletion() {
+
+    if(!pendingDeleteWorkspaceId) return;
+    if(appState.workspaces.length === 1) return;
+
+    appState.tasks = appState.tasks.filter(task => task.workspaceId !== pendingDeleteWorkspaceId);
+    appState.workspaces = appState.workspaces.filter( ws => ws.id !== pendingDeleteWorkspaceId);
+
+    if (appState.activeWorkspaceId === pendingDeleteWorkspaceId) {
+        appState.activeWorkspaceId =
+        appState.workspaces.length > 0 ? appState.workspaces[0].id : null;
+    }
+
+    saveState(appState);
+    renderApp();
 }

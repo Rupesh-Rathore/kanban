@@ -32,7 +32,7 @@
                     <div class="column-right count">count</div>
                 </div>
                 <div class="task-list">
-                    
+
                 </div>
             </div>
             <div data-status="in-progress" class="task-column">
@@ -41,7 +41,7 @@
                     <div class="column-right count">count</div>
                 </div>
                 <div class="task-list">
-                    
+
                 </div>
             </div>
             <div data-status="review" class="task-column">
@@ -50,7 +50,7 @@
                     <div class="column-right count">count</div>
                 </div>
                 <div class="task-list">
-                    
+
                 </div>
             </div>
             <div data-status="done" class="task-column">
@@ -59,7 +59,7 @@
                     <div class="column-right count">count</div>
                 </div>
                 <div class="task-list">
-                    
+
                 </div>
             </div>
         </main>
@@ -67,24 +67,40 @@
     <div class="modal add-new-task">
         <div class="bg"></div>
         <form class="center">
-                <input id= "task-title-input" type="text" placeholder="Task Title">
-                <textarea id= "task-desc-input" placeholder="Task Description"></textarea>
-                <label for="task-priority">Task Priority</label>
-                <select name="task-priority" id="task-priority">
-                    <option value="low" selected>Low</option>
-                    <option value="medium">Medium</option>
-                    <option value="high">High</option>
-                </select>
-                <button type="submit" id = "add-new-task" class="add-task-btn">Add task</button>
-                <button type="button" id = "cancel-btn-id-task" class="cancel-btn">Cancel</button>
+            <input id="task-title-input" type="text" placeholder="Task Title">
+            <textarea id="task-desc-input" placeholder="Task Description"></textarea>
+            <label for="task-priority">Task Priority</label>
+            <select name="task-priority" id="task-priority">
+                <option value="low" selected>Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+            <button type="submit" id="add-new-task" class="add-task-btn">Add task</button>
+            <button type="button" id="cancel-btn-id-task" class="cancel-btn">Cancel</button>
         </form>
     </div>
     <div class="modal add-new-workspace">
         <div class="bg"></div>
         <div class="center">
-            <input id= "workspace-title-input" type="text" placeholder="Workspace Name">
-            <button id = "add-new-workspace" class="add-workspace-btn">Add Workspace</button>
-            <button id = "cancel-btn-id-workspace" class="cancel-btn">Cancel</button>
+            <input id="workspace-title-input" type="text" placeholder="Workspace Name">
+            <button id="add-new-workspace" class="add-workspace-btn">Add Workspace</button>
+            <button id="cancel-btn-id-workspace" class="cancel-btn">Cancel</button>
+        </div>
+    </div>
+    <div class="modal delete-workspace">
+        <div class="bg"></div>
+        <div class="center">
+            <div class="icon-and-title">
+                <img src="" alt="" srcset=""><!-- will add an svg later -->
+                <h2 class="delete-workspace-title"></h2><!-- we will dynamically add "Delete workspace 'workspace name'"-->
+            </div>
+            <div class="warning">
+                <p>Deleting a workspace will permanently remove it and all its tasks from your Space</p>
+            </div>
+            <div class="action">
+                <button type="button" id="cancel-delete-workspace" class="cancel-btn">No,Keep Workspace</button>
+                <button id="confirm-delete-workspace" class="delete-workspace-btn">Yes,Delete Workspace</button>
+            </div>
         </div>
     </div>
     <script type="module" src="js/main.js"></script>
