@@ -18,7 +18,20 @@ export function renderWorkspaceTabs() {
 
     appState.workspaces.forEach(ws =>{
         const tabElement = document.createElement('div');
-        tabElement.textContent = ws.name;
+        const nameElement = document.createElement('h2');
+        const deleteElement = document.createElement('button');
+
+        nameElement.textContent = ws.name;
+        nameElement.classList.add('workspace-name');
+
+        deleteElement.innerHTML = '<img src="assets/svgs/delete.svg" alt="deleteTab">';
+        deleteElement.classList.add('workspace-delete');
+        deleteElement.setAttribute('data-workspace-id', ws.id);
+        deleteElement.setAttribute('aria-label', 'Delete workspace');
+
+        tabElement.appendChild(nameElement);
+        tabElement.appendChild(deleteElement);
+
         tabElement.classList.add('workspace-tab');
         tabElement.setAttribute('data-workspace-id', ws.id);
 

@@ -68,6 +68,15 @@ nav {
 .workspaceTabs .workspace-tab.active{
     background-color: deeppink; /* For testing purposes */
 }
+.workspaceTabs .workspace-tab .workspace-delete{
+    opacity: 0;
+    pointer-events: none;
+}
+
+.workspaceTabs .workspace-tab:hover .workspace-delete{
+    opacity: 1;
+    pointer-events: auto;
+}
 
 .workspace {
     min-height: 0;
