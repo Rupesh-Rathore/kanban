@@ -106,7 +106,6 @@ export function loadState() {
 
 }
 
-
 export function saveState(state) {
     try{
         localStorage.setItem(APP_STATE_KEY,JSON.stringify(state));

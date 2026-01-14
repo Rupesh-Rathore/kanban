@@ -50,7 +50,6 @@ export function initWorkspaceEvents() {
     });
 }
 
-
 export function initHamburgerEvent(){
     const hamburgerButton = document.querySelector('#hamburgerButton');
     const sidebar = document.querySelector('.sideBar');
