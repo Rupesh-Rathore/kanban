@@ -78,6 +78,12 @@ nav {
     pointer-events: auto;
 }
 
+.workspace-delete.disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+
 .workspace {
     min-height: 0;
     background-color: aqua; /* For testing purposes */

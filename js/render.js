@@ -21,6 +21,8 @@ export function renderWorkspaceTabs() {
         const nameElement = document.createElement('h2');
         const deleteElement = document.createElement('button');
 
+        const isLastWorkspace = appState.workspaces.length === 1;
+
         nameElement.textContent = ws.name;
         nameElement.classList.add('workspace-name');
 
@@ -28,6 +30,13 @@ export function renderWorkspaceTabs() {
         deleteElement.classList.add('workspace-delete');
         deleteElement.setAttribute('data-workspace-id', ws.id);
         deleteElement.setAttribute('aria-label', 'Delete workspace');
+
+        deleteElement.disabled = isLastWorkspace;
+        deleteElement.title = isLastWorkspace ? 'At least one workspace is required' : 'Delete workpace';
+
+        if(isLastWorkspace){
+            deleteElement.classList.add('disabled');
+        }
 
         tabElement.appendChild(nameElement);
         tabElement.appendChild(deleteElement);

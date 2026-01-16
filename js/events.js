@@ -15,6 +15,10 @@ export function initWorkspaceEvents() {
         if (deleteBtn) {
             e.stopPropagation();
 
+            if (appState.workspaces.length === 1) {
+                return; // HARD STOP
+            }
+
             const tab = deleteBtn.closest('.workspace-tab');
             if (!tab) return;
 
