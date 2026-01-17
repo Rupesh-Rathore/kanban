@@ -21,7 +21,6 @@ export function initWorkspaceEvents() {
         startWorkspaceRename(tab, nameEl, workspaceId);
     });
 
-
     workspaceTabsContainer.addEventListener('click', (e) => {
 
         if (e.target.closest('.workspace-tab')?.classList.contains('editing')) return;
@@ -59,10 +58,10 @@ export function initWorkspaceEvents() {
 
         // SWITCH WORKSPACE
 
-        if (tab.classList.contains('editing')) return;
-
+        
         const tab = e.target.closest('.workspace-tab');
         if (!tab) return;
+        if (tab.classList.contains('editing')) return;
 
         const workspaceId = tab.dataset.workspaceId;
         if (!workspaceId || workspaceId === appState.activeWorkspaceId) return;

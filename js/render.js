@@ -53,30 +53,85 @@ export function renderWorkspaceTabs() {
     })
 }
 
+const COLUMN_EMPTY_TEXT = {
+    'todo': 'Add a task to get started',
+    'in-progress': 'Working on something? Drop it here',
+    'review': 'Ready for feedback? Put it here',
+    'done': 'Finished tasks will appear here'
+};
+
+
 export function renderTasks() {
     if (!appState.activeWorkspaceId) return;
     const tasks = appState.tasks.filter(task => task.workspaceId === appState.activeWorkspaceId);
-
+        
     document.querySelectorAll('.task-list').forEach(list =>{
         list.innerHTML = '';
     });
+    
+    const workspace = document.querySelector('.workspace');
+    if(!workspace) return;
+    workspace.querySelectorAll('.workspace-empty').forEach( el => el.remove());
 
-    tasks.forEach(task =>{
-        const taskelement = document.createElement('div');
-        taskelement.classList.add('task');
-        taskelement.setAttribute('data-id',task.id);
-        taskelement.setAttribute("draggable","true");
-        // taskelement.setAttribute('data-status',task.status);
-        // taskelement.setAttribute('data-workspace-id',task.workspaceId);
-        taskelement.innerHTML = `
-                    <h1>${task.title}</h1>
-                    <p>${task.description}</p>
-                    <h3>${task.priority}</h3>
-                    <button class="taskDeleteButton" >Delete</button>`;
-        const targetList = document.querySelector(`[data-status="${task.status}"] .task-list`);
+    if(tasks.length === 0){
 
-        if(targetList){
-            targetList.appendChild(taskelement);
+        // logic to show One central text that shows that workspace do not have any task
+        // I will write it later as you instructed
+
+
+        const div = document.createElement('div');
+        div.classList.add('workspace-empty');
+        div.innerHTML = `<h2>No tasks yet.</h2>
+                        <h2>Add your first one to get started.</h2>`;
+        if(!div) return;
+        workspace.appendChild(div);
+        return;
+    }
+
+    let statusedTasks = {
+        'todo' : [],
+        'in-progress' : [],
+        'review' : [],
+        'done' : []
+    }
+
+    tasks.forEach(task => {
+        if (statusedTasks[task.status]) {
+            statusedTasks[task.status].push(task);
+        }
+    })
+
+    Object.keys(statusedTasks).forEach(key => {
+        if(statusedTasks[key].length === 0){
+            // logic to add empty-state text to the column with status -> key
+                const targetList = document.querySelector(`[data-status="${key}"] .task-list`);
+
+                if(targetList){
+                    const empty = document.createElement('div');
+                    empty.classList.add('column-empty');
+                    empty.textContent = COLUMN_EMPTY_TEXT[key];
+                    targetList.appendChild(empty);
+                }
+        }
+        else{
+            statusedTasks[key].forEach(task => {
+                const taskelement = document.createElement('div');
+                taskelement.classList.add('task');
+                taskelement.setAttribute('data-id',task.id);
+                taskelement.setAttribute("draggable","true");
+                // taskelement.setAttribute('data-status',task.status);
+                // taskelement.setAttribute('data-workspace-id',task.workspaceId);
+                taskelement.innerHTML = `
+                            <h1>${task.title}</h1>
+                            <p>${task.description}</p>
+                            <h3>${task.priority}</h3>
+                            <button class="taskDeleteButton" >Delete</button>`;
+                const targetList = document.querySelector(`[data-status="${key}"] .task-list`);
+
+                if(targetList){
+                    targetList.appendChild(taskelement);
+                }
+            })
         }
     })
 }
