@@ -8,7 +8,23 @@ export function initWorkspaceEvents() {
     const workspaceTabsContainer = document.querySelector('.workspaceTabs');
     if (!workspaceTabsContainer) return;
 
+    workspaceTabsContainer.addEventListener('dblclick', (e) => {
+        const nameEl = e.target.closest('[data-role="workspace-name"]');
+        if (!nameEl) return;
+
+        const tab = nameEl.closest('.workspace-tab');
+        if (!tab) return;
+
+        const workspaceId = tab.dataset.workspaceId;
+        if (!workspaceId) return;
+
+        startWorkspaceRename(tab, nameEl, workspaceId);
+    });
+
+
     workspaceTabsContainer.addEventListener('click', (e) => {
+
+        if (e.target.closest('.workspace-tab')?.classList.contains('editing')) return;
 
         // DELETE WORKSPACE
         const deleteBtn = e.target.closest('.workspace-delete');
@@ -42,6 +58,9 @@ export function initWorkspaceEvents() {
         }
 
         // SWITCH WORKSPACE
+
+        if (tab.classList.contains('editing')) return;
+
         const tab = e.target.closest('.workspace-tab');
         if (!tab) return;
 
@@ -332,4 +351,70 @@ function confirmedWorkspaceDeletion() {
 
     saveState(appState);
     renderApp();
+}
+
+function startWorkspaceRename(tab, nameEl, workspaceId) {
+    // Prevent multiple edits
+    if (tab.classList.contains('editing')) return;
+
+    tab.classList.add('editing');
+
+    const originalName = nameEl.textContent;
+
+    const input = document.createElement('input');
+    input.type = 'text';
+    input.value = originalName;
+    input.className = 'workspace-rename-input';
+
+    nameEl.replaceWith(input);
+    input.focus();
+    input.select();
+
+    input.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter') {
+            confirmWorkspaceRename(tab, input, originalName, workspaceId);
+        }
+        if (e.key === 'Escape') {
+            cancelWorkspaceRename(tab, input, originalName);
+        }
+    });
+
+    input.addEventListener('blur', () => {
+        confirmWorkspaceRename(tab, input, originalName, workspaceId);
+    });
+}
+
+function confirmWorkspaceRename(tab, input, originalName, workspaceId) {
+    const newName = input.value.trim();
+
+    // Validation
+    if (
+        !newName ||
+        appState.workspaces.some(
+            ws => ws.id !== workspaceId &&
+                    ws.name.toLowerCase() === newName.toLowerCase()
+        )
+    ) {
+        cancelWorkspaceRename(tab, input, originalName);
+        return;
+    }
+
+    const workspace = appState.workspaces.find(ws => ws.id === workspaceId);
+    if (!workspace) return;
+
+    workspace.name = newName;
+
+    saveState(appState);
+    renderApp();
+}
+
+function cancelWorkspaceRename(tab, input, originalName) {
+    tab.classList.remove('editing');
+
+    const nameEl = document.createElement('h2');
+    nameEl.className = 'workspace-name';
+    nameEl.setAttribute('data-role', 'workspace-name');
+    nameEl.textContent = originalName;
+
+    input.replaceWith(nameEl);
 }

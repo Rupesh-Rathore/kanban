@@ -116,3 +116,13 @@ nav {
     background-color: coral; /* For testing purposes */
     overflow-y: auto;
 }
+
+.workspace-rename-input {
+    width: 100%;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 4px 6px;
+}
+.workspace-tab.editing .workspace-delete {
+    display: none;
+}

@@ -25,6 +25,7 @@ export function renderWorkspaceTabs() {
 
         nameElement.textContent = ws.name;
         nameElement.classList.add('workspace-name');
+        nameElement.setAttribute('data-role', 'workspace-name');
 
         deleteElement.innerHTML = '<img src="assets/svgs/delete.svg" alt="deleteTab">';
         deleteElement.classList.add('workspace-delete');
